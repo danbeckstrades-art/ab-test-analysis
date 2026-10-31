@@ -1,6 +1,6 @@
 # A/B Test Analysis: Moving the First Gate (Cookie Cats)
 
-A pre-planned analysis of a mobile-game A/B test, with a power analysis, experiment validation, a decision rule fixed before looking at outcomes, and a simulation of how peeking and multiple metrics inflate false positives.
+I analyzed a mobile-game A/B test with the plan fixed in advance: a power analysis, experiment validation, and a decision rule set before looking at outcomes. I also simulated how peeking and multiple metrics inflate false positives.
 
 ## Question
 Cookie Cats is a mobile puzzle game. The company moved the first progress gate from level 30 (control) to level 40 (treatment). Does that change player retention?
@@ -8,7 +8,7 @@ Cookie Cats is a mobile puzzle game. The company moved the first progress gate f
 ## Data
 [Mobile Games A/B Testing - Cookie Cats](https://www.kaggle.com/datasets/mursideyarkin/mobile-games-ab-testing-cookie-cats) (Kaggle, Mursideyarkin): 90,189 players with `version`, `sum_gamerounds`, `retention_1`, `retention_7`. The CSV is not included; save it as `data/cookie_cats.csv`.
 
-## Design (fixed before looking at outcomes)
+## Design (I fixed this before looking at outcomes)
 - Primary metric: 7-day retention. Secondary: 1-day retention. Guardrail: game rounds played.
 - Two-sided test, alpha = 0.05, power = 0.80.
 - Smallest effect worth acting on: 0.5 percentage points (an assumed placeholder, not a business-derived number).
@@ -27,10 +27,10 @@ Cookie Cats is a mobile puzzle game. The company moved the first progress gate f
 
 - Moving the gate to level 40 **reduced** 7-day retention by about 0.8 percentage points (4.3% relative). The primary result clears a Bonferroni threshold of 0.025 for the two retention metrics.
 - Engagement (rounds played) shows no clear change. Medians are 17 vs 16 rounds, and three different tests give p between 0.05 and 0.07. One control-group user logged 49,854 rounds (probably a bot or logging error); I kept the user and capped values at the 99.9th percentile for mean comparisons.
-- **Recommendation:** keep the gate at level 30.
+- **My recommendation:** keep the gate at level 30, because the change lowered 7-day retention.
 
 ## Why the analysis was planned in advance
-Simulated A/A tests with no true effect: a single planned look gives 5.0% false positives, peeking 10 times and stopping at the first p < 0.05 gives 19.2%, and testing 10 metrics gives at least one false "win" 40.3% of the time (4.9% with a Bonferroni correction).
+I simulated A/A tests with no true effect: a single planned look gives 5.0% false positives, peeking 10 times and stopping at the first p < 0.05 gives 19.2%, and testing 10 metrics gives at least one false "win" 40.3% of the time (4.9% with a Bonferroni correction).
 
 ## Limitations
 - The unexplained sample ratio mismatch could bias the estimate in an unknown direction.
@@ -43,3 +43,4 @@ Simulated A/A tests with no true effect: a single planned look gives 5.0% false 
     pip install -r requirements.txt
 
 Place the CSV at `data/cookie_cats.csv` and run `notebooks/01_analysis.ipynb`. Random seeds are fixed at 42.
+
